@@ -1,7 +1,7 @@
 const client = require('./client');
 const { createUser, getAllUsers, getUser, getUserByUsername } = require('./users');
 const { createActivity, getAllActivities, updateActivity } = require('./activities');
-const { getAllRoutines, getPublicRoutines, getAllRoutinesByUser, createRoutine, getActivitiesByRoutineId, getPublicRoutinesByUser, updateRoutine, getPublicRoutinesByActivity} = require('./routines');
+const { getAllRoutines, getPublicRoutines, getAllRoutinesByUser, createRoutine, getActivitiesByRoutineId, getPublicRoutinesByUser, updateRoutine, getPublicRoutinesByActivity, getRoutineById, destroyRoutine } = require('./routines');
 const {   createRoutineActivity, updateRoutineActivity, destroyRoutineActivity } = require('./routine_activities');
 
 
@@ -156,6 +156,13 @@ async function createInitialRoutines(){
         goal: 'get outside of your head with these extradimensional exercises'
     })
 
+    await createRoutine({
+        creatorId: extra_spicey.id,
+        public: true,
+        name:'delete me!',
+        goal: 'my goal is death!'
+    })
+
     console.log('finished making routines')
 } catch (error) {
     console.log('error making routines')
@@ -168,7 +175,7 @@ async function createInitialRoutineActivities (){
         console.log('creating initial routine activities')
         await createRoutineActivity({
             routineId: 1,
-            activityId: 3,
+            activityId: 1,
             count: 57,
             duration: 5
         })
@@ -261,7 +268,13 @@ async function testDB() {
         const publicRoutinesbyActivity = await getPublicRoutinesByActivity(1)
         console.log('getPublicRoutinesByActivity:', publicRoutinesbyActivity )
 
+        console.log('calling getRoutineById')
+        const routinebyId = await getRoutineById(2);
+        console.log('getRoutineById:', routinebyId)
 
+        console.log('calling destroyRoutine');
+        const deletedroutine = await destroyRoutine(5);
+        console.log('destroyRoutine:')
 
 	} catch (error) {
 		console.log('error during tests');

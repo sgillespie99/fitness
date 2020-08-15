@@ -109,10 +109,31 @@ async function getAllUsers(){
 }
 
 
+async function getUserById(userId) {
+    try {
+      const { rows: [ user ] } = await client.query(`
+        SELECT id, username
+        FROM users
+        WHERE id=${ userId }
+      `);
+  
+      if (!user) {
+        return null
+      }
+  
+  
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
 
 module.exports = {
     createUser,
     getAllUsers,
     getUser,
-    getUserByUsername
+    getUserByUsername,
+    getUserById
 }
