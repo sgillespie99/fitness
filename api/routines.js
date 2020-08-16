@@ -73,6 +73,8 @@ routinesRouter.patch('/:routineId', requireUser, async ( req, res, next) => {
     const { routineId } = req.params;
     const { public, name, goal } = req.body;
 
+    console.log(routineId)
+
     const updatedFields = {}
 
     if (public){
@@ -86,6 +88,8 @@ routinesRouter.patch('/:routineId', requireUser, async ( req, res, next) => {
     if (goal){
         updatedFields.goal = goal
     }
+
+    console.log(updatedFields)
 
     try {
         const originalRoutine = await getRoutineById(routineId)

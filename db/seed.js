@@ -2,7 +2,7 @@ const client = require('./client');
 const { createUser, getAllUsers, getUser, getUserByUsername } = require('./users');
 const { createActivity, getAllActivities, updateActivity } = require('./activities');
 const { getAllRoutines, getPublicRoutines, getAllRoutinesByUser, createRoutine, getActivitiesByRoutineId, getPublicRoutinesByUser, updateRoutine, getPublicRoutinesByActivity, getRoutineById, destroyRoutine } = require('./routines');
-const {   createRoutineActivity, updateRoutineActivity, destroyRoutineActivity } = require('./routine_activities');
+const {   createRoutineActivity, updateRoutineActivity, destroyRoutineActivity, getRoutineActivityById } = require('./routine_activities');
 
 
 async function dropTables() {
@@ -275,6 +275,17 @@ async function testDB() {
         console.log('calling destroyRoutine');
         const deletedroutine = await destroyRoutine(5);
         console.log('destroyRoutine:')
+
+        console.log('calling updateRoutineActivity')
+        const updatedRoutineActivity = await updateRoutineActivity(3, {
+            duration: 202,
+            count: 202
+        })
+        console.log('updatedRoutineActivity:', updatedRoutineActivity)
+
+        console.log('calling getRoutineActivityById')
+        const routineActivityById = await getRoutineActivityById(4)
+        console.log('getRoutineActivityById:', routineActivityById)
 
 	} catch (error) {
 		console.log('error during tests');

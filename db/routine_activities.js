@@ -28,28 +28,29 @@ async function updateRoutineActivity (id, fields = {}){
       ).join(', ');
    
     try {
-        if (setString.length > 0){
+        
            const { rows } = await client.query(`
             UPDATE routine_activities
             SET ${ setString }
-            WHERE "routineId"=${ id }
-            RETURNING *;`, Object.values(fields))
+            WHERE id=${ id }
+            RETURNING *;`, 
+            Object.values(fields))
             
             return rows;
-        }
+        
     } catch (error){
         throw error;
     }
 }
 
 
-async function destroyRoutineActivity(activityId){
+async function destroyRoutineActivity(id){
     try{
         const { rows: deleted } = await client.query(`
         DELETE FROM routine_activities
-        WHERE "activityId" = $1
+        WHERE "id" = $1
         RETURNING *;`,
-        [activityId])
+        [id])
 
         return deleted
     } catch (error){
@@ -57,9 +58,24 @@ async function destroyRoutineActivity(activityId){
     }
 }
 
+async function getRoutineActivityById(id){
+    try{
+        const {rows: [routine_activities]} = await client.query(`
+        SELECT *
+        FROM routine_activities
+        WHERE id = $1
+        `, [id])
+
+        return routine_activities
+    } catch(error){
+        throw error
+    }
+}
+
 
 module.exports = {
     createRoutineActivity,
     updateRoutineActivity,
-    destroyRoutineActivity
+    destroyRoutineActivity,
+    getRoutineActivityById
 }
